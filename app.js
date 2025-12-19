@@ -85,19 +85,20 @@ app.get('/data' , (req ,res)=>{
     
 })
 
-app.get("/user/data" , (req, res)=>{
+app.get('/user' , (req, res)=>{
 
-    let sql = "SELECT * FROM user_data WHERE id"
+    let {id} = req.query 
 
-    db.query(sql, (err, result)=>{
+    db.query(`SELECT * FROM user_data WHERE id = ${id} ` ,(err , result)=>{
         if(err){
-            res.send({sucess: false , message :"data not found"})
+            return res.send({success : false , message : "Data not found"})
         }
 
-        res.send(result)
-    })
-})
+        res.send({success : true , data : result})
 
+    })
+
+})
 
 
 
