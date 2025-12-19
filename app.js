@@ -15,7 +15,19 @@
 // })
 
 import express from 'express'
+
 import mysql from 'mysql2'
+
+import cors from 'cors'
+
+const app = express()
+
+app.use(express.json())
+
+app.use(cors())
+
+const port = 3000
+
 
 const db = mysql.createConnection({
     host:"localhost",
@@ -33,10 +45,6 @@ db.connect((err)=>{
     console.log("Database is connected sucessflly !!")
 })
 
-
-const app = express()
-
-const port = 3000
 
 app.get('/user', (req , res)=>{
 
@@ -67,6 +75,28 @@ app.get('/user/rich', (req , res)=>{
 
 })
 
+
+app.get('/data' , (req ,res)=>{
+
+    let name = req.body.name
+    let age = req.body.age
+
+    res.send(`Hello ${name} welcome to our site and your age is ${age}`)
+    
+})
+
+app.get("/user/data" , (req, res)=>{
+
+    let sql = "SELECT * FROM user_data WHERE id"
+
+    db.query(sql, (err, result)=>{
+        if(err){
+            res.send({sucess: false , message :"data not found"})
+        }
+
+        res.send(result)
+    })
+})
 
 
 
